@@ -10,7 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('home');
 });
+Route::get('/home','ViewController@home_index')->name('home.index');
+Route::resources([
+    'users' => UserController::class,
+    'comments' => CommentController::class,
+]);
+Route::get('/users/all_comments/{user}','UserController@show_allComments')->name('users.comments');

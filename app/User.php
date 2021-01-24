@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+       'name','age','email','password','birthday','status'
     ];
 
     /**
@@ -36,4 +36,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    // Make relationship User can make many posts
+    public function posts(){
+        return $this->hasMany('App\Comment');
+    }
+    // User via Post make many comments relationship
+    public function comments(){
+        // User - > Post - > Comment
+        // 3rd parameter is a foreignkey of Mid Table 
+        // 4th parameter is a foreignkey of Last Table 
+        // 5th parameter is a local primary key
+        return $this->hasManyThrough('App\Comment','App\Post','user_id','post_id','id');
+    }
+    // User has One Profile
+    public function profile(){
+        return $this->hasOne('App\Profile','user_id','id');
+    }
 }
